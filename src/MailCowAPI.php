@@ -3,8 +3,10 @@
 namespace Drhostcl\Mailcow;
 
 use Drhostcl\Mailcow\Aliases\Aliases;
+use Drhostcl\Mailcow\Domainaliases\Domainaliases;
 use Drhostcl\Mailcow\AntiSpam\AntiSpam;
 use Drhostcl\Mailcow\Domains\Domains;
+use Drhostcl\Mailcow\Dkim\Dkim;
 use Drhostcl\Mailcow\Exception\ParameterException;
 use Drhostcl\Mailcow\MailBoxes\MailBoxes;
 use GuzzleHttp\Client;
@@ -19,6 +21,8 @@ class MailCowAPI
     private $antiSpamHandler;
     private $mailBoxesHandler;
     private $aliasesHandler;
+    private $domainAliasesHandler;
+    private $dkimHandler;
 
     /**
      * MailCowAPI constructor.
@@ -209,6 +213,22 @@ class MailCowAPI
         }
 
         return $this->aliasesHandler;
+    }
+    public function domainaliases(): Domainaliases
+    {
+        if (!$this->domainAliasesHandler) {
+            $this->domainAliasesHandler = new Domainaliases($this);
+        }
+
+        return $this->domainAliasesHandler;
+    }
+    public function dkim(): Dkim
+    {
+        if (!$this->dkimHandler) {
+            $this->dkimHandler = new dkim($this);
+        }
+
+        return $this->dkimHandler;
     }
 
 }
